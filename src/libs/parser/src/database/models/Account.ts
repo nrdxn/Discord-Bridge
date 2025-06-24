@@ -7,10 +7,10 @@ import { modelOptions, prop, Severity } from '@typegoose/typegoose';
 })
 export class Account {
     @prop()
-    public readonly token!: string;
+    public readonly id!: string;
 
     @prop()
-    public readonly id!: string;
+    public token!: string;
 
     @prop()
     public name?: string;

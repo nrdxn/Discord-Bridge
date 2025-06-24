@@ -20,7 +20,7 @@ export default async (client: ClientClass, ctx: Context) => {
     const account = await client.services.database.accounts.findById(
         validate.id!
     );
-    
+
     if (account && !account.banned) {
         client.listeners.cache.delete(ctx.from!.id);
         return await client.services.notifications.responseWithNotify(
@@ -28,6 +28,10 @@ export default async (client: ClientClass, ctx: Context) => {
             Warns.ACCOUNT_EXIST
         );
     } else if (account && account.banned) {
+        account.banned = false;
+        account.token = token;
+        await client.services.database.accounts.save(account);
+        
         await startProviders(client).then(async () => {
             const { text, markups } = await client.services.builder.account(
                 validate.id!
@@ -38,7 +42,6 @@ export default async (client: ClientClass, ctx: Context) => {
             });
         });
     } else {
-
         client.listeners.cache.delete(ctx.from!.id);
         await client.services.database.accounts.createInDb({
             token: token,
