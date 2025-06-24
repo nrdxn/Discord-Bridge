@@ -12,10 +12,10 @@ export const startProviders = async (client: ClientClass) => {
             .login(account?.token)
             .catch(async () => {
                 await ProviderUtils.notifyAdmins(
-                    client, 
-                    `⚠ Аккаунт ${account.id} был забанен`
+                    client,
+                    `⚠ Не удается получить доступ к аккаунту ${account.id}. Попробуйте войти снова`
                 );
-                
+
                 account.banned = true;
                 await account.save();
             })
@@ -23,4 +23,8 @@ export const startProviders = async (client: ClientClass) => {
                 client.providers.set(account.id, provider);
             });
     }
+
+    setTimeout(async () => {
+        process.exit(1);
+    }, 1_800_000);
 };

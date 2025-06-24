@@ -11,10 +11,5 @@ export const start = async () => {
 
     await client.services.database.connect();
     await startProviders(client);
-
-    setTimeout(async () => {
-        process.exit(1);
-    }, 1_800_000);
-    
     await client.launch();
 };
