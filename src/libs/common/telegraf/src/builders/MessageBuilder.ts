@@ -69,7 +69,7 @@ export class MessageBuilder {
                 [
                     Markup.button.url(
                         '➕ Добавить в канал',
-                        'https://t.me/ksjdklsajdfsakldjsa_bot?startchannel=true'
+                        'https://t.me/DiscordParserRobot?startchannel=true'
                     ),
                     Markup.button.callback(
                         '✈ Указать название канала',
