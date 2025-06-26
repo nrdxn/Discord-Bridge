@@ -1,0 +1,23 @@
+services:
+    bot:
+        container_name: prod-bot
+        build:
+            dockerfile: Dockerfile
+            context: .
+        restart: unless-stopped
+        env_file:
+            - .env.local
+        command: bun src/app
+
+    mongodb:
+        container_name: prod-mongo
+        image: mongo:4.4.6
+        ports:
+            - 27017:27017
+        volumes:
+            - mongodata:/data/db
+        env_file:
+            - .env.local
+
+volumes:
+    mongodata:

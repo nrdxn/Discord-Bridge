@@ -8,6 +8,7 @@ import { CommandsHandler } from '@/libs/common/telegraf/src/helpers/CommandsHand
 import { NotificationsService } from '@/libs/notifications/src/NotificationsService';
 import { DatabaseService } from '@/libs/common/database/src/DatabaseService';
 import { MessageBuilder } from '@/libs/common/telegraf/src/builders/MessageBuilder';
+import { startProviders } from '@/libs/self/src/ProvidersInstance';
 
 export class ClientClass extends Telegraf {
     public readonly listeners: ListenersHandler;
@@ -40,5 +41,16 @@ export class ClientClass extends Telegraf {
             }),
             builder: new MessageBuilder(this)
         };
+    }
+
+    public async init() {
+        this.services.logger.listen();
+        this.listeners.load();
+        this.buttons.load();
+        this.commands.load();
+
+        await this.services.database.connect();
+        await startProviders(this);
+        await this.launch();
     }
 }
